@@ -4,7 +4,7 @@ import noPhoto from '../photos/noPhoto.png';
 export default function AnimalCard({animal}) {
     
   return (
-    <div className="w-[400px] bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden text-right flex flex-col" dir="rtl">
+    <div className="w-[350px] bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden text-right flex flex-col" dir="rtl">
       
       {/* אזור התמונה והתגיות שמעליה */}
       <div className="relative">
@@ -36,7 +36,7 @@ export default function AnimalCard({animal}) {
         </p>
         
         {/* כפתור */}
-        <button className="mt-auto w-full bg-[#76c082] hover:bg-[#65a870] text-white font-medium py-2 px-4 rounded-md transition-colors">
+        <button className="mt-auto w-full bg-[#76c082] hover:bg-[#65a870] text-white font-medium py-2 px-4 rounded-full transition-colors">
           פרטים נוספים
         </button>
       </div>
