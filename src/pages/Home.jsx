@@ -68,7 +68,7 @@ const Home = () => {
       </div>
 
       {/* מיני גלריה */}
-      <div className="flex flex-col items-center w-full h-auto text-center p-20 gap-2">
+      <div className="flex flex-col items-center w-full h-auto text-center p-20">
         <h1 className="text-3xl">חיות מחמד מחכות לאימוץ</h1>
         <h2>הכירו את חלק מחיות המחמד המקסימות שמחכות למשפחה חדשה</h2>
 
@@ -95,7 +95,7 @@ const Home = () => {
       </div>
 
         {/* תרומות */}
-        <div className="w-screen relative bg-[#6dbb7d] py-16 px-4 mt-20 text-white text-center flex flex-col items-center gap-6">
+        <div className="w-screen relative bg-[#6dbb7d] py-20 px-4 mt-6 text-white text-center flex flex-col items-center gap-6">
           {/* כותרת גדולה */}
           <h2 className="text-4xl font-bold">עזרו לנו להציל עוד חיות מחמד</h2>
           

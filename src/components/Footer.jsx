@@ -58,6 +58,7 @@ const Footer = () => {
       {/* שורת זכויות יוצרים וכניסה לניהול */}
       <div className="max-w-6xl mx-auto mt-4 pt-8 border-t border-gray-100 flex flex-col items-center gap-2 text-gray-400 text-xs">
         <p>בית מתנאל. כל הזכויות שמורות 2025 ©</p>
+        <a href="https://www.flaticon.com/free-animated-icons/care" title="care animated icons">Care animated icons created by Freepik - Flaticon</a>
         <button className="flex items-center gap-1 hover:text-gray-600 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-3 h-3">
             <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
