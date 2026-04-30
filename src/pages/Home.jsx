@@ -1,7 +1,18 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
+import AnimalCard from '../components/AnimalCard';
 
 const Home = () => {
+
+  const tempAnimal = {
+    name: "סקאי",
+    type: "ארנב",
+    age: "שנה",
+    gender:"נקבה",
+    available: true,
+    image: null
+  };
+
     return(
 
     <main className="min-h-screen bg-white">
@@ -66,6 +77,8 @@ const Home = () => {
         {/* Grids-הגלרייה עצמה תהיה מחולקת ל */}
         <div className="grid grid-col-1 md:grid-col-3">
           {/* קופוננטה של הכרטיסיות */}
+          <AnimalCard animal={tempAnimal} />
+        
         </div>
       </div>
 
