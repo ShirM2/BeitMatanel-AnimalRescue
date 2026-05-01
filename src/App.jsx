@@ -5,10 +5,13 @@ import ReportForm from './pages/ReportForm';
 import Donations from './pages/Donations';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   return (
     <Router>
+
+      <ScrollToTop />
       <Routes>
         
         <Route path="/" element={<Home />} />
@@ -17,7 +20,7 @@ function App() {
         <Route path="/Donations" element={<Donations />} />
         <Route path="/About" element={<About />} />
         <Route path="/Contact" element={<Contact />} />
-        
+
       </Routes>
     </Router>
   );

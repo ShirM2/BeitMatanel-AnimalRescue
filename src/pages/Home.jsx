@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from '../components/Navbar';
 import AnimalCard from '../components/AnimalCard';
 import Footer from '../components/Footer';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   // מערך זמני לחיות
@@ -81,8 +82,9 @@ const Home = () => {
 
         </div>
 
+        {/* כפתור כניסה לגלרייה */}
         <div className="w-full flex justify-center mt-12">
-          <button className="flex items-center gap-2 px-4 py-3 bg-white border border-gray-200 text-gray-800 font-semibold rounded-full shadow-sm hover:border-gray-300 hover:bg-gray-200 transition-all duration-300">
+          <Link to="/Gallery" className="flex items-center gap-2 px-4 py-3 bg-white border border-gray-200 text-gray-800 font-semibold rounded-full shadow-sm hover:border-gray-300 hover:bg-gray-200 transition-all duration-300">
             
             {/* האייקון (SVG מתוך Heroicons) */}
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-gray-500">
@@ -90,7 +92,8 @@ const Home = () => {
             </svg>
 
             <span className="text-lg">צפה בכל חיות המחמד</span>
-          </button>
+          </Link>
+
         </div>
       </div>
 
