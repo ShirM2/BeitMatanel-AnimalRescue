@@ -25,11 +25,11 @@ export default function Navbar() {
             דווח על חיה במצוקה
           </Link>
 
-          <Link to="/donations" className="whitespace-nowrap text-gray-700 hover:text-orange-300 font-medium transition-colors text-xs md:text-sm lg:text-base">
+          <Link to="/Donations" className="whitespace-nowrap text-gray-700 hover:text-orange-300 font-medium transition-colors text-xs md:text-sm lg:text-base">
             תרומות
           </Link>
 
-          <Link to="/about" className="whitespace-nowrap text-gray-700 hover:text-orange-300 font-medium transition-colors text-xs md:text-sm lg:text-base">
+          <Link to="/About" className="whitespace-nowrap text-gray-700 hover:text-orange-300 font-medium transition-colors text-xs md:text-sm lg:text-base">
             אודות
           </Link>
 
