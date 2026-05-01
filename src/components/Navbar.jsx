@@ -13,14 +13,29 @@ export default function Navbar() {
 
         {/* קישורי ניווט */}
         <div className="flex-1 flex gap-3 xl:gap-10 justify-center">
-          <a href="/" className="whitespace-nowrap text-gray-700 hover:text-orange-300 font-medium transition-colors text-xs md:text-sm lg:text-base">דף הבית</a>
+          <Link to="/" className="whitespace-nowrap text-gray-700 hover:text-orange-300 font-medium transition-colors text-xs md:text-sm lg:text-base">
+            דף הבית
+          </Link>
+
           <Link to="/Gallery" className="whitespace-nowrap text-gray-700 hover:text-orange-300 font-medium transition-colors text-xs md:text-sm lg:text-base">
             החיות שלנו
-          </Link>         
-          <a href="/report" className="whitespace-nowrap text-gray-700 hover:text-orange-300 font-medium transition-colors text-xs md:text-sm lg:text-base">דווח על חיה במצוקה</a>
-          <a href="/donations" className="whitespace-nowrap text-gray-700 hover:text-orange-300 font-medium transition-colors text-xs md:text-sm lg:text-base">תרומות</a>
-          <a href="/about" className="whitespace-nowrap text-gray-700 hover:text-orange-300 font-medium transition-colors text-xs md:text-sm lg:text-base">אודות</a>
-          <a href="/contact" className="whitespace-nowrap text-gray-700 hover:text-orange-300 font-medium transition-colors text-xs md:text-sm lg:text-base">צור קשר</a>
+          </Link>
+
+          <Link to="/ReportForm" className="whitespace-nowrap text-gray-700 hover:text-orange-300 font-medium transition-colors text-xs md:text-sm lg:text-base">
+            דווח על חיה במצוקה
+          </Link>
+
+          <Link to="/donations" className="whitespace-nowrap text-gray-700 hover:text-orange-300 font-medium transition-colors text-xs md:text-sm lg:text-base">
+            תרומות
+          </Link>
+
+          <Link to="/about" className="whitespace-nowrap text-gray-700 hover:text-orange-300 font-medium transition-colors text-xs md:text-sm lg:text-base">
+            אודות
+          </Link>
+
+          <Link to="/contact" className="whitespace-nowrap text-gray-700 hover:text-orange-300 font-medium transition-colors text-xs md:text-sm lg:text-base">
+            צור קשר
+          </Link>
         </div>
 
         {/* קישור לאימוץ */}
