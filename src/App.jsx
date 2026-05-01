@@ -4,6 +4,7 @@ import Gallery from './pages/Gallery';
 import ReportForm from './pages/ReportForm';
 import Donations from './pages/Donations';
 import About from './pages/About';
+import Contact from './pages/Contact';
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
         <Route path="/ReportForm" element={<ReportForm />} />
         <Route path="/Donations" element={<Donations />} />
         <Route path="/About" element={<About />} />
-
+        <Route path="/Contact" element={<Contact />} />
+        
       </Routes>
     </Router>
   );

@@ -33,7 +33,7 @@ export default function Navbar() {
             אודות
           </Link>
 
-          <Link to="/contact" className="whitespace-nowrap text-gray-700 hover:text-orange-300 font-medium transition-colors text-xs md:text-sm lg:text-base">
+          <Link to="/Contact" className="whitespace-nowrap text-gray-700 hover:text-orange-300 font-medium transition-colors text-xs md:text-sm lg:text-base">
             צור קשר
           </Link>
         </div>
