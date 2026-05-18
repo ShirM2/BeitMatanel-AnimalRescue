@@ -1,8 +1,9 @@
 import { Navigate } from 'react-router-dom';
-import { auth } from '../firebase';
+import { auth } from '../../firebase';
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 
+// מעטפת אבטחה לכל העמודים במערכת הניהול
 const ProtectedRoute = ({ children }) => {
 
     const [user, setUser] = useState(null);
@@ -33,7 +34,7 @@ const ProtectedRoute = ({ children }) => {
         return <Navigate to="/login" />;
     }
 
-    // אם יש משתמש - תראה לו את מה שביקש (ה-children)
+    
     return children;
 };
 

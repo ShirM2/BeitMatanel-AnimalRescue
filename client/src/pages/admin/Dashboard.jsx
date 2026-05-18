@@ -1,24 +1,14 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../../firebase';
-import { signOut } from 'firebase/auth';
-import Sidebar from '../../components/admin/Sidebar';
+import { useOutletContext } from 'react-router-dom';
+
 
 const Dashboard = () => {
 
     const navigate = useNavigate();
 
-    // פונקציה שתנהל את היציאה מהמערכת
-        const handleLogout = async () => {
-            try {
-                // נפעיל את פעולת היציאה
-                await signOut(auth);
-                // ננווט חזרה לעמוד ההתחברות
-                navigate('/login', { replace: true });
-            } catch (err) {
-                console.error("שגיאה בהתנתקות:", err.message);
-            }
-        };
+    const { handleLogout } = useOutletContext();
+
     const stats = [
         { id: 1, title: 'תרומות החודש', value: '₪3,650', desc: 'מהחודש הקודם 12%+', color: 'text-green-600', bgIcon: 'bg-green-50' },
         { id: 2, title: 'בקשות אימוץ ממתינות', value: '2', desc: 'דורשות בדיקה', color: 'text-orange-500', bgIcon: 'bg-orange-50' },
@@ -37,14 +27,7 @@ const Dashboard = () => {
     ];
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] flex text-right font-sans" dir="rtl">
-      
-      {/*תפריט צד*/}
-      <Sidebar onLogout={handleLogout} />
-
-      
-      <div className="flex-1 pr-64 w-full">
-        <div className="max-w-7xl mx-auto p-10 w-full">
+    <div className="max-w-7xl mx-auto p-10 w-full font-sans text-right" dir="rtl">
           
           {/* כותרת עליונה */}
           <div className="flex justify-between items-center mb-8 border-b border-gray-100 pb-5">
@@ -160,8 +143,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-        </div>
-      </div>
+        
     </div>
   );
 };

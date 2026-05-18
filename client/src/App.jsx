@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Gallery from './pages/Gallery';
 import ReportForm from './pages/ReportForm';
@@ -6,9 +6,14 @@ import Donations from './pages/Donations';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import ScrollToTop from './components/ScrollToTop';
+
 import Login from './pages/Login';
 import Dashboard from './pages/admin/Dashboard';
-import ProtectedRoute from './components/ProtectedRoute';
+import Reports from './pages/admin/Reports';
+
+
+import ProtectedRoute from './components/admin/ProtectedRoute';
+import AdminLayout from './components/admin/AdminLayout';
 
 function App() {
   return (
@@ -25,14 +30,24 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login/>} />
 
+        {/* /admin הגדרתי ראוט בסיסי למערכת הניהול  */}
+        {/* הגנת אבטחה ומעטפת קבועה לכל עמודי הניהול */}
         <Route 
-          path="/dashboard" 
-          element={ 
-                    <ProtectedRoute>
-                        <Dashboard />
-                    </ProtectedRoute>
-                  } 
-        />
+          path="/admin" 
+          element={
+            <ProtectedRoute>
+              <AdminLayout />
+            </ProtectedRoute>
+          }
+        >
+          {/* ניתוב אוטומטי מכתובת הבסיס ישירות לדשבורד */}
+          <Route index element={<Navigate to="dashboard" replace />} />
+
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="reports" element={<Reports />} />
+
+        </Route>
+
       </Routes>
     </Router>
   );
