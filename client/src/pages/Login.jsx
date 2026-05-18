@@ -25,13 +25,13 @@ const Login = () => {
 
             // מגדירים לפיירבייס לשמור את המשתמש רק כל עוד הטאב/דפדפן פתוח
             await setPersistence(auth, browserSessionPersistence);
-            
+
             // שלוקחת את אובייקט אימות המשתמש firebase של auth פונקציה של
             //  ,האימייל, והסיסמא ושולחת אותם לשרתים לאימות המשתמש
             // במידה והמשתמש קיבל אישור כניסה token ומחזירה
             await signInWithEmailAndPassword(auth, email, password);
             // ננווט את המשתמש לעמוד הפאנל ניהול
-            navigate('/admin');
+            navigate('/dashboard');
 
         } catch(err) {
 

@@ -7,7 +7,7 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import ScrollToTop from './components/ScrollToTop';
 import Login from './pages/Login';
-import Admin from './pages/AdminPanel';
+import Dashboard from './pages/admin/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -26,10 +26,10 @@ function App() {
         <Route path="/login" element={<Login/>} />
 
         <Route 
-          path="/admin" 
+          path="/dashboard" 
           element={ 
                     <ProtectedRoute>
-                        <Admin />
+                        <Dashboard />
                     </ProtectedRoute>
                   } 
         />
