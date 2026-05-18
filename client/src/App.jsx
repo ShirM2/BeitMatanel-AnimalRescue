@@ -10,6 +10,7 @@ import ScrollToTop from './components/ScrollToTop';
 import Login from './pages/Login';
 import Dashboard from './pages/admin/Dashboard';
 import Reports from './pages/admin/Reports';
+import PetsManagement from './pages/admin/PetsManagement';
 
 
 import ProtectedRoute from './components/admin/ProtectedRoute';
@@ -45,6 +46,7 @@ function App() {
 
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="reports" element={<Reports />} />
+          <Route path="PetsManagement" element={<PetsManagement />} />
 
         </Route>
 

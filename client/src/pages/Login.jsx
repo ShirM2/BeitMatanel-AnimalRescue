@@ -31,7 +31,7 @@ const Login = () => {
             // במידה והמשתמש קיבל אישור כניסה token ומחזירה
             await signInWithEmailAndPassword(auth, email, password);
             // ננווט את המשתמש לעמוד הפאנל ניהול
-            navigate('/dashboard');
+            navigate('/admin/dashboard');
 
         } catch(err) {
 
