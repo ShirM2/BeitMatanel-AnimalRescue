@@ -11,6 +11,7 @@ const firebaseConfig = {
   appId: "1:561238471358:web:7578edd11b5d5ba01a64ef",
   measurementId: "G-PNKBWLN7K9"
 };
+
 // אתחול האפליקציה 
 const app = initializeApp(firebaseConfig);
 
