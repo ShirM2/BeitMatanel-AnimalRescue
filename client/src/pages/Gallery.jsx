@@ -78,7 +78,7 @@ export default function Gallery() {
         <div className="max-w-6xl mx-auto my-12 p-8 bg-gray-100 border border-gray-100 rounded-3xl shadow-sm" dir="rtl">
             <h2 className="text-xl font-bold text-gray-800 mb-6 text-right">סינון חיות מחמד</h2>
             
-            {/* שינוי ל-4 עמודות במסך רחב כדי להוסיף את הכפתור בשורה אחת */}
+           
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
                 
                 {/* סוג חיה */}
