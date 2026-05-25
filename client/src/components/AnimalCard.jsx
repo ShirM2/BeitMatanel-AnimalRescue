@@ -9,8 +9,8 @@ export default function AnimalCard({animal}) {
       {/* אזור התמונה והתגיות שמעליה */}
       <div className="relative">
         <img 
-          className="w-full h-[230px] object-cover" 
-          src={animal.image || noPhoto} 
+          className="w-full h-[230px] object-cover object-center" 
+          src={animal.imageUrl || noPhoto} 
           alt={animal.name} 
         />
         
