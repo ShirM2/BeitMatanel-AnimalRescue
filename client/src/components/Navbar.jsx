@@ -40,8 +40,8 @@ export default function Navbar() {
 
         {/* קישור לאימוץ */}
         <div className="flex-1 flex justify-center">
-           <a href="/adpot_form" 
-              className="bg-[#E8A36A] text-white px-3 py-1.5 md:px-6 md:py-2 rounded-full font-bold shadow-md hover:bg-[#d48e55] transition-all duration-300 whitespace-nowrap text-xs md:text-base">אני רוצה לאמץ</a>
+           <Link to="/AdoptionInfo" 
+              className="bg-[#E8A36A] text-white px-3 py-1.5 md:px-6 md:py-2 rounded-full font-bold shadow-md hover:bg-[#d48e55] transition-all duration-300 whitespace-nowrap text-xs md:text-base">אני רוצה לאמץ</Link>
         </div>
       </div>
     </nav>

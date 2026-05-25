@@ -13,6 +13,7 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
+    // טיפול בהתחברות לצוות
     const handleLogin = async (e) => {
         // מונעים רענון אוטומטי של הדף, כדי שהפרטים ישמרו ולא יימחקו
         e.preventDefault();
@@ -47,7 +48,7 @@ const Login = () => {
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
       
-      {/* 1. הדיב של הרקע - שים לב שהוא נסגר בסוף השורה עם /> */}
+      {/* הדיב של הרקע */}
       <div 
         className="absolute inset-0 z-0"
         style={{ 
@@ -58,7 +59,7 @@ const Login = () => {
         }}
       />
 
-      {/* 2. הטופס - שים לב להסרת הכפילות ב-onSubmit */}
+      {/*  טופס הכניסה לצוות */}
       <form 
         onSubmit={handleLogin} 
         className="relative z-10 max-w-md w-full p-10 bg-white/90 shadow-2xl rounded-3xl"
@@ -105,6 +106,15 @@ const Login = () => {
           ) : (
             'התחברות למערכת'
           )}
+        </button>
+        
+        {/* כפתור החזרה לעמוד הבית */}
+        <button
+          type="button"
+          onClick={() => navigate('/')}
+          className="mt-5 w-full text-center text-gray-500 hover:text-gray-800 text-sm font-medium transition-colors"
+        >
+          חזרה לעמוד הבית
         </button>
 
       </form>

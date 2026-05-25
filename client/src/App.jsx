@@ -5,7 +5,9 @@ import ReportForm from './pages/ReportForm';
 import Donations from './pages/Donations';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import AdoptionInfo from './pages/AdoptionInfo';
 import ScrollToTop from './components/ScrollToTop';
+
 
 import Login from './pages/Login';
 import Dashboard from './pages/admin/Dashboard';
@@ -29,6 +31,7 @@ function App() {
         <Route path="/donations" element={<Donations />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/AdoptionInfo" element={<AdoptionInfo />} />
         <Route path="/login" element={<Login/>} />
 
         {/* /admin הגדרתי ראוט בסיסי למערכת הניהול  */}
