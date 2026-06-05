@@ -1,16 +1,68 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import AnimalCard from '../components/AnimalCard';
 import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
 
+import { collection, query, limit, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
+
 const Home = () => {
-  // מערך זמני לחיות
-  const previewAnimals = [
-    { id: 1, name: "סקאי", type: "ארנב", age: "שנה", gender: "נקבה", available: true, image: null },
-    { id: 2, name: "לונה", type: "חתול", age: "שנה וחצי", gender: "נקבה", available: true, image: null },
-    { id: 3, name: "רקס", type: "כלב", age: "שנתיים", gender: "זכר", available: false, image: null }
-  ];
+  // משתנה סטייט לחיות
+  const [previewAnimals, setPreviewAnimals] = useState([]);
+
+  // שמירת מיקום הגלילה בכל פעם שהמשתמש גולל
+  useEffect(() => {
+
+    const handleScroll = () => {
+      // שומרים את המיקום שאנחנו נמצאים
+      sessionStorage.setItem('homeScroll', window.scrollY);
+    };
+    // מאזינים לאירוע של גלילה
+    window.addEventListener('scroll', handleScroll);
+
+    // מסירים את ההאזנה לאירוע כשהקומפוננטה מוסרת כדי למנוע זליגת זיכרון
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect( () => {
+    // פונקציה שמכניסה את שלושת החיות האחרונות מהמסד נתונים
+    const fetchPreviewAnimals = async () => {
+
+      try {
+        // הגדרת שאילתה ושליפת 3 חיות בלבד מהאוסף
+        const q = query(collection(db, "animals"), limit(3));
+
+        // ביצוע הפנייה לשרת ושמירת התוצאות שחזרו
+        const querySnapshot = await getDocs(q);
+
+        // המרת הנתונים מפייר בייס לאובייקטים
+        const animalsData = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+
+        // עדכון הסטייס למערך החדש
+        setPreviewAnimals(animalsData);
+
+        // שחזור מיקום הגלילה אחרי שהחיות נטענו
+        setTimeout(() => {
+          // מגדירים משתנה של המיקום האחרון שעצרנו בו
+          const savedPosition = sessionStorage.getItem('homeScroll');
+          // אם יש לנו את המיקום האחרון נגלול למיקום הזה בדף
+          if (savedPosition) {
+            window.scrollTo(0, parseInt(savedPosition));
+          }
+        }, 100);
+
+      } catch (error) {
+
+        console.error("Error fetching animals: ", error);
+      }
+    };
+
+    fetchPreviewAnimals();
+  }, []);
 
     return(
 

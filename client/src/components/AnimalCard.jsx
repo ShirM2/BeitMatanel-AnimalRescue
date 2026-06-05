@@ -1,5 +1,6 @@
 import React from 'react'
 import noPhoto from '../photos/noPhoto.png';
+import { Link } from 'react-router-dom';
 
 export default function AnimalCard({animal}) {
     
@@ -36,9 +37,12 @@ export default function AnimalCard({animal}) {
         </p>
         
         {/* כפתור */}
-        <button className="mt-auto w-full bg-[#76c082] hover:bg-[#65a870] text-white font-medium py-2 px-4 rounded-full transition-colors">
+        <Link 
+          to={`/AnimalDetails/${animal.id}`} 
+          className="mt-auto w-full bg-[#76c082] hover:bg-[#65a870] text-white font-medium py-2 px-4 rounded-full transition-colors text-center block"
+        >
           פרטים נוספים
-        </button>
+        </Link>
       </div>
     </div>
   )
