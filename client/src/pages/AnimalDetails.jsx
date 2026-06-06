@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link  } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase'; 
-import noPhoto from '../photos/noPhoto.png'; 
+import noPhoto from '../photos/noPhoto.png';
 
 export default function AnimalDetails() {
     // נשלוף את האיידי של החיה מהכתובת של האתר
@@ -99,9 +99,12 @@ export default function AnimalDetails() {
                     </div>
 
                     {/* כפתור האימוץ */}
-                    <button className="mt-6 bg-[#76c082] hover:bg-[#65a870] text-white font-bold py-3 px-10 rounded-full transition-all shadow-md text-lg w-full md:w-auto">
+                    <Link 
+                        to={`/AdoptionForm/${animal.id}`}
+                        className="mt-6 bg-[#76c082] hover:bg-[#65a870] text-white font-bold py-3 px-10 rounded-full transition-all shadow-md text-lg w-full md:w-auto text-center block"
+                    >
                         אני רוצה לאמץ!
-                    </button>
+                    </Link>
                 </div>
                 
             </div>
