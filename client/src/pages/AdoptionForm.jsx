@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 export default function AdoptionForm() {
 
   // נשלוף את האיידי של החיה מהכתובת של האתר
   const { id } = useParams();
   const navigate = useNavigate();
+
   // יצירת משתני סטייט לשמירת המידע מהטופס
   const [formData, setFormData] = useState({
     fullName: '',
@@ -15,18 +18,36 @@ export default function AdoptionForm() {
     hasOtherPets: '',
     reason: ''
   });
+
   // פונקציה שמטפלת בעדכון הסטייט
   // אי אפשר לשנות את הסטייט אז אנחנו ניצור עותק שלו ונשתמש
   // שמטפלת בכל השדות של הטופס e.target.name  בפונקציה 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
   // פונקציה שמטפלת בשליחת הטופס
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    console.log("Submit clicked");
     e.preventDefault();
-    console.log("נתוני בקשת אימוץ:", { animalId: id, ...formData });
-    alert("תודה! פנייתך התקבלה, נציג מהעמותה ייצור איתך קשר בקרוב.");
-    navigate('/');
+
+    try{
+      // הוספת מסמך חדש לאוסף שנקרא adoption_requests
+      // ונגדיר בתוכו את המידע מהטופס
+      await addDoc(collection(db, "adoption_requests"), {
+        animalId: id,
+        ...formData,
+        createdAt: new Date() // תאריך יצירת הבקשה
+      });
+
+      // ננווט את המשתמש לעמוד התודה
+      navigate('/ThankYou');
+
+    }catch (error) {
+      console.error("Error adding document: ", error);
+      alert("הייתה שגיאה בשליחת הטופס, נסה שוב מאוחר יותר.");
+    }
+    
   };
 
   return (
@@ -78,7 +99,7 @@ export default function AdoptionForm() {
             className="p-3 border border-gray-300 rounded-xl w-full h-32"
             onChange={handleChange}
           />
-          
+
           {/* כפתור שליחת בקשת האימוץ */}
           <button type="submit" className="bg-[#76c082] hover:bg-[#65a870] text-white font-bold py-3 rounded-xl transition-all mt-4">
             שלח בקשת אימוץ

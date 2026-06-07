@@ -9,6 +9,7 @@ import AdoptionInfo from './pages/AdoptionInfo';
 import ScrollToTop from './components/ScrollToTop';
 import AnimalDetails from './pages/AnimalDetails';
 import AdoptionForm from './pages/AdoptionForm';
+import ThankYou from './pages/ThankYou';
 
 
 import Login from './pages/Login';
@@ -37,6 +38,7 @@ function App() {
         <Route path="/login" element={<Login/>} />
         <Route path="/AnimalDetails/:id" element={<AnimalDetails />} />
         <Route path="/AdoptionForm/:id" element={<AdoptionForm />} />
+        <Route path="/ThankYou" element={<ThankYou />} />
 
         {/* /admin הגדרתי ראוט בסיסי למערכת הניהול  */}
         {/* הגנת אבטחה ומעטפת קבועה לכל עמודי הניהול */}
