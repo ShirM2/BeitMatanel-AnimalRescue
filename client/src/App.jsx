@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Home from './pages/Home';
 import Gallery from './pages/Gallery';
 import ReportForm from './pages/ReportForm';
-import Donations from './pages/Donations';
+import PublicDonations from './pages/Donations';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import AdoptionInfo from './pages/AdoptionInfo';
@@ -12,10 +12,13 @@ import AdoptionForm from './pages/AdoptionForm';
 import ThankYou from './pages/ThankYou';
 
 
+
 import Login from './pages/Login';
 import Dashboard from './pages/admin/Dashboard';
 import Reports from './pages/admin/Reports';
 import PetsManagement from './pages/admin/PetsManagement';
+import Adoptions from './pages/admin/Adoptions';
+import AdminDonations from './pages/admin/Donations';
 
 
 import ProtectedRoute from './components/admin/ProtectedRoute';
@@ -31,7 +34,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/reportForm" element={<ReportForm />} />
-        <Route path="/donations" element={<Donations />} />
+        <Route path="/donations" element={<PublicDonations />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/AdoptionInfo" element={<AdoptionInfo />} />
@@ -56,6 +59,8 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="reports" element={<Reports />} />
           <Route path="PetsManagement" element={<PetsManagement />} />
+          <Route path="Adoptions" element={<Adoptions />} />
+          <Route path="Donations" element={<AdminDonations />} />
 
         </Route>
 

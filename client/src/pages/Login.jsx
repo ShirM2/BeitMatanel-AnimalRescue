@@ -77,19 +77,23 @@ const Login = () => {
           <label className="block mb-1">אימייל</label>
           <input 
             type="email" 
+            name="email"
             className="w-full p-3 border rounded-xl" 
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
           />
         </div>
 
         <div className="mb-6">
           <label className="block mb-1">סיסמה</label>
           <input 
-            type="password" 
+            type="password"
+            name="password"
             className="w-full p-3 border rounded-xl" 
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            autoComplete="current-password"
           />
         </div>
 
