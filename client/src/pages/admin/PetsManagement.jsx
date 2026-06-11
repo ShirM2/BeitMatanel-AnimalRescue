@@ -1,8 +1,10 @@
 import React, { useState ,useEffect} from 'react';
 import { useOutletContext } from 'react-router-dom';
-import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import EditPetModal from '../../components/admin/EditPetModal';
+import AddPetModal from '../../components/admin/AddPetModal';
+
 
 // פונקציה שעוזרת להחליט איזה צבע לתת לסטטוס
 const getStatusColor = (status) => {
@@ -45,6 +47,8 @@ const PetsManagement = () => {
 
   const [editingPet, setEditingPet] = useState(null);
 
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
   // פונקציה לעדכון הפיירבייס
   const updatePetInFirebase = async (updatedPet) => {
 
@@ -52,13 +56,31 @@ const PetsManagement = () => {
 
       const petRef = doc(db, "animals", updatedPet.id);
       await updateDoc(petRef, updatedPet);
-      
+
       // עדכון המערך המקורי והחלפת החיה הישנה בגרסא המעודכנת לפי האיידי
       setPets(prevPets => prevPets.map(p => p.id === updatedPet.id ? updatedPet : p));
       setEditingPet(null);
 
     } catch (error) {
       console.error("Error updating pet: ", error);
+    }
+  };
+
+  // פונקציה למחיקת חיה מפיירבייס
+  const deletePetFromFirebase = async (id) => {
+    // הודעת אישור כדי למנוע מחיקה בטעות
+    if (window.confirm("האם אתה בטוח שברצונך למחוק חיה זו?")) {
+      try {
+
+        const petRef = doc(db, "animals", id);
+        await deleteDoc(petRef);
+        
+        // עדכון המערך המקומי: סינון החיה שנמחקה החוצה
+        setPets(prevPets => prevPets.filter(pet => pet.id !== id));
+
+      } catch (error) {
+        console.error("Error deleting pet: ", error);
+      }
     }
   };
 
@@ -115,7 +137,7 @@ const PetsManagement = () => {
       {/* כפתור הוספת חיית מחמד חדשה למאגר*/}
       <div className="flex justify-between items-center mb-6">
         <div></div>
-        <button className="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-xl flex items-center gap-2 text-sm font-medium shadow-sm transition-colors">
+        <button onClick={() => setIsAddModalOpen(true)} className="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-xl flex items-center gap-2 text-sm font-medium shadow-sm transition-colors">
           <span>הוסף חיית מחמד חדשה</span>
           <span className="text-lg font-bold">+</span>
         </button>
@@ -150,8 +172,8 @@ const PetsManagement = () => {
             className="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-2.5 text-sm text-gray-400 focus:outline-none focus:border-gray-200"
           >
             <option value="">כל הסטטוסים</option>
-            <option value="available">זמין לאימוץ</option>
-            <option value="process">בתהליך אימוץ</option>
+            <option value="זמין לאימוץ">זמין לאימוץ</option>
+            <option value="בתהליך אימוץ">בתהליך אימוץ</option>
           </select>
         </div>
 
@@ -197,7 +219,16 @@ const PetsManagement = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                       </svg>
                     </button>
+
+                    <button onClick={() => deletePetFromFirebase(pet.id)} className="border border-red-200 hover:border-red-300 text-red-600 px-4 py-1.5 rounded-xl text-xs font-medium inline-flex items-center gap-1.5 transition-colors shadow-sm">
+                      <span>מחק</span>
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                      </svg>
+                    </button>
+                    
                   </td>
+                  
                 </tr>
               ))}
             </tbody>
@@ -212,6 +243,14 @@ const PetsManagement = () => {
           pet = {editingPet} 
           onClose = {() => setEditingPet(null)} 
           onSave = {updatePetInFirebase} 
+        />
+      )}
+
+      {/* הצגת חלון הוספת חיה במידה ונלחץ */}
+      {isAddModalOpen && (
+        <AddPetModal 
+          onClose={() => setIsAddModalOpen(false)} 
+          onAdded={(newPet) => setPets([...pets, newPet])} 
         />
       )}
     </div>
