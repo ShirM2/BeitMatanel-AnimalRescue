@@ -1,5 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import { useOutletContext } from 'react-router-dom';
+import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
+import EditPetModal from '../../components/admin/EditPetModal';
+
+// פונקציה שעוזרת להחליט איזה צבע לתת לסטטוס
+const getStatusColor = (status) => {
+
+  switch (status) {
+
+    case 'זמין לאימוץ': return 'bg-green-50 text-green-600';
+
+    case 'בתהליך אימוץ': return 'bg-orange-50 text-orange-500';
+
+    default: return 'bg-gray-100 text-gray-600';
+
+  }
+
+};
 
 const PetsManagement = () => {
   
@@ -11,14 +29,68 @@ const PetsManagement = () => {
   const [typeFilter, setTypeFilter] = useState('');
 
   // מערך זמני
-  const [pets, setPets] = useState([
-    { id: 1, name: 'מקס', age: 'שנתיים', gender: 'זכר', type: 'כלב', status: 'זמין לאימוץ', statusColor: 'bg-gray-100 text-gray-600', image: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=100&auto=format&fit=crop&q=60' },
-    { id: 2, name: 'לונה', age: 'שנה וחצי', gender: 'נקבה', type: 'חתול', status: 'זמין לאימוץ', statusColor: 'bg-green-50 text-green-600', image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=100&auto=format&fit=crop&q=60' },
-    { id: 3, name: 'שוקו', age: 'שנה', gender: 'זכר', type: 'ארנבון', status: 'זמין לאימוץ', statusColor: 'bg-green-50 text-green-600', image: 'https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?w=100&auto=format&fit=crop&q=60' },
-    { id: 4, name: 'צ\'יקי', age: 'חודשים 6', gender: 'נקבה', type: 'אוגר', status: 'בתהליך אימוץ', statusColor: 'bg-orange-50 text-orange-500', image: 'https://images.unsplash.com/photo-1607990283143-e81e7a2c93ab?w=100&auto=format&fit=crop&q=60' },
-  ]);
+  const [pets, setPets] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+
+  // הוספת לוגיקת הסינון
+  const filteredPets = pets.filter(pet => {
+
+    const matchesSearch = pet.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesType = typeFilter === '' || pet.type === typeFilter;
+    const matchesStatus = statusFilter === '' || pet.status === statusFilter;
+    return matchesSearch && matchesType && matchesStatus;
+
+  });
+
+  const [editingPet, setEditingPet] = useState(null);
+
+  // פונקציה לעדכון הפיירבייס
+  const updatePetInFirebase = async (updatedPet) => {
+
+    try {
+
+      const petRef = doc(db, "animals", updatedPet.id);
+      await updateDoc(petRef, updatedPet);
+      
+      // עדכון המערך המקורי והחלפת החיה הישנה בגרסא המעודכנת לפי האיידי
+      setPets(prevPets => prevPets.map(p => p.id === updatedPet.id ? updatedPet : p));
+      setEditingPet(null);
+
+    } catch (error) {
+      console.error("Error updating pet: ", error);
+    }
+  };
+
+  // FireStore-שליפת הנתונים מ
+  useEffect(() => {
+
+    const fetchPets = async () => {
+
+      try {
+
+        const querySnapshot = await getDocs(collection(db, "animals"));
+
+        const petsData = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+
+        // נשמור את המידע על החיות
+        setPets(petsData);
+
+      } catch (error) {
+        console.error("Error fetching pets: ", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPets();
+  }, []);
 
   return (
+
     <div className="max-w-7xl mx-auto p-10 w-full font-sans text-right" dir="rtl">
       
       {/* כותרת עליונה ויציאה */}
@@ -68,9 +140,9 @@ const PetsManagement = () => {
             className="w-full bg-gray-50 border border-gray-100 rounded-xl px-4 py-2.5 text-sm text-gray-400 focus:outline-none focus:border-gray-200"
           >
             <option value="">כל הסוגים</option>
-            <option value="dog">כלבים</option>
-            <option value="cat">חתולים</option>
-            <option value="rabbit">ארנבים</option>
+            <option value="כלב">כלבים</option>
+            <option value="חתול">חתולים</option>
+            <option value="ארנב">ארנבים</option>
           </select>
           <select
             value={statusFilter}
@@ -98,11 +170,12 @@ const PetsManagement = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
-              {pets.map((pet) => (
+              {/* נעבור על מערך חיות המסונן */}
+              {filteredPets.map((pet) => (
                 <tr key={pet.id} className="text-sm text-gray-700 hover:bg-gray-50/50 transition-colors">
                   <td className="py-4">
                     <img 
-                      src={pet.image} 
+                      src={pet.imageUrl}
                       alt={pet.name} 
                       className="w-12 h-12 rounded-xl object-cover border border-gray-100"
                     />
@@ -112,12 +185,13 @@ const PetsManagement = () => {
                   <td className="py-4 text-gray-500">{pet.gender}</td>
                   <td className="py-4 text-gray-500">{pet.type}</td>
                   <td className="py-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium inline-block ${pet.statusColor}`}>
+                    {/* getStatusColor - נשתמש בפונקציה לבדיקת צבע הסטטוס */}
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium inline-block ${getStatusColor(pet.status)}`}>
                       {pet.status}
                     </span>
                   </td>
                   <td className="py-4 text-center">
-                    <button className="border border-gray-200 hover:border-gray-300 text-gray-700 px-4 py-1.5 rounded-xl text-xs font-medium inline-flex items-center gap-1.5 transition-colors shadow-sm">
+                    <button onClick={() => setEditingPet(pet)} className="border border-gray-200 hover:border-gray-300 text-gray-700 px-4 py-1.5 rounded-xl text-xs font-medium inline-flex items-center gap-1.5 transition-colors shadow-sm">
                       <span>ערוך</span>
                       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
@@ -131,6 +205,15 @@ const PetsManagement = () => {
         </div>
 
       </div>
+
+      {/* הצגת חלון עריכת חיה במידה ונבחרה חיה לעריכה */}
+      {editingPet && (
+        <EditPetModal 
+          pet = {editingPet} 
+          onClose = {() => setEditingPet(null)} 
+          onSave = {updatePetInFirebase} 
+        />
+      )}
     </div>
   );
 };
