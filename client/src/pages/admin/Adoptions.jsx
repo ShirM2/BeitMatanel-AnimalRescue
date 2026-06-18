@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 import { db } from '../../firebase';
+import { useOutletContext } from 'react-router-dom';
 
 export default function Adoptions() {
 
     const [requests, setRequests] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const { handleLogout } = useOutletContext();
 
     useEffect(() => {
 
@@ -36,8 +39,24 @@ export default function Adoptions() {
   return (
 
     <div className="p-6" dir="rtl">
-        {/* כותרת */}
-        <h1 className="text-2xl font-bold mb-6">בקשות אימוץ שהתקבלו</h1>
+        {/* כותרת עליונה ויציאה */}
+        <div className="flex justify-between items-center mb-8 border-b border-gray-100 pb-5">
+            <div>
+            <p className="text-gray-500 text-sm">שלום, מנהל/ת</p>
+            <h1 className="text-4xl font-bold text-gray-800 mt-1">בקשות האימוץ שהתקבלו</h1>
+            <p className="text-gray-400 text-xs mt-1">כל בקשות האימוץ במערכת</p>
+            </div>
+            
+            <button 
+            onClick={handleLogout}
+            className="flex items-center gap-2 text-gray-500 hover:text-gray-800 transition-colors text-sm font-medium"
+            >
+            <span>יציאה</span>
+            <svg className="w-5 h-5 transform rotate-180" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+            </svg>
+            </button>
+        </div>
       
         {loading ? (
             <p className="text-center mt-10">טוען בקשות...</p>
