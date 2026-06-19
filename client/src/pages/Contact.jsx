@@ -1,8 +1,66 @@
-import React from 'react'
+import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../firebase';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet';
+import icon from 'leaflet/dist/images/marker-icon.png';
+import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+import { useNavigate } from 'react-router-dom';
+
+// React-מול ה LeafLet תיקון לאייקון של הספרייה 
+const DefaultIcon = L.icon({
+        iconUrl: icon,
+        shadowUrl: iconShadow,
+        iconSize: [25, 41],
+        iconAnchor: [12, 41]
+    });
+    L.Marker.prototype.options.icon = DefaultIcon;
 
 export default function Contact() {
+
+    // קורדינציות לכתובת העמותה
+    const position = [32.0733, 34.7779];
+
+    const navigate = useNavigate();
+
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        message: ''
+    });
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await addDoc(collection(db, "contactMessages"), {
+                ...formData,
+                createdAt: serverTimestamp()
+            });
+
+            navigate('/ThankYou', { 
+                state: { 
+                    title: 'ההודעה התקבלה!', 
+                    message: 'תודה שיצרת איתנו קשר , הצוות שלנו יטפל בזה בהקדם.' 
+                } 
+            });
+
+            setFormData({ name: '', email: '', phone: '', message: '' }); // איפוס
+        } catch (error) {
+            console.error("Error adding document: ", error);
+            alert('אירעה שגיאה בשליחה, נסה שוב מאוחר יותר.');
+        }
+    };
+
+    
+
   return (
     <div>
     
@@ -24,39 +82,80 @@ export default function Contact() {
                 {/* טופס */}
                 <div className="border border-gray-100 rounded-2xl p-8 bg-white shadow-sm">
                     <h2 className="text-xl font-bold text-gray-800 mb-6">שלח לנו הודעה</h2>
-                    <form className="space-y-4">
-                    <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-1">שם *</label>
-                        <input type="text" placeholder="השם שלך" className="w-full bg-gray-100 p-3 rounded-lg border-none outline-none focus:ring-2 focus:ring-green-400 text-sm" />
-                    </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-1">אימייל *</label>
-                        <input type="email" placeholder="example@email.com" className="w-full bg-gray-100 p-3 rounded-lg border-none outline-none focus:ring-2 focus:ring-green-400 text-sm text-left" dir="ltr" />
+                            <label className="block text-sm font-bold text-gray-700 mb-1">שם *</label>
+                            <input
+                                name="name"
+                                required
+                                value={formData.name}
+                                onChange={handleInputChange}
+                                type="text"
+                                placeholder="השם שלך"
+                                className="w-full bg-gray-100 p-3 rounded-lg border-none outline-none focus:ring-2 focus:ring-green-400 text-sm"
+                                dir="ltr"
+                                />
                         </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-sm font-bold text-gray-700 mb-1">אימייל *</label>
+                                <input
+                                    name="email"
+                                    required
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    type="email"
+                                    placeholder="example@email.com"
+                                    className="w-full bg-gray-100 p-3 rounded-lg border-none outline-none focus:ring-2 focus:ring-green-400 text-sm text-left" 
+                                    dir="ltr"
+                                    />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-bold text-gray-700 mb-1">טלפון *</label>
+                                <input
+                                    name="phone"
+                                    required
+                                    value={formData.phone}
+                                    onChange={handleInputChange}
+                                    pattern="[0-9]*"
+                                    type="tel"
+                                    placeholder="050-1234567"
+                                    className="w-full bg-gray-100 p-3 rounded-lg border-none outline-none focus:ring-2 focus:ring-green-400 text-sm text-left" 
+                                    dir="ltr" />
+                            </div>
+                        </div>
+
                         <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-1">טלפון</label>
-                        <input type="tel" placeholder="050-1234567" className="w-full bg-gray-100 p-3 rounded-lg border-none outline-none focus:ring-2 focus:ring-green-400 text-sm text-left" dir="ltr" />
+                            <label className="block text-sm font-bold text-gray-700 mb-1">הודעה *</label>
+                            <textarea
+                                name="message"
+                                required
+                                value={formData.message}
+                                onChange={handleInputChange}
+                                placeholder="כתוב/י את הודעתך כאן..." 
+                                rows="4"
+                                className="w-full bg-gray-100 p-3 rounded-lg border-none outline-none focus:ring-2 focus:ring-green-400 text-sm">
+                            </textarea>
                         </div>
-                    </div>
 
-                    <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-1">הודעה *</label>
-                        <textarea placeholder="כתוב/י את הודעתך כאן..." rows="4" className="w-full bg-gray-100 p-3 rounded-lg border-none outline-none focus:ring-2 focus:ring-green-400 text-sm"></textarea>
-                    </div>
-
-                    <button type="submit" className="w-full bg-[#74bd81] text-white font-bold py-3 rounded-lg hover:bg-[#63a76f] transition-colors mt-2">
-                        שלח הודעה
-                    </button>
+                        <button type="submit" className="w-full bg-[#74bd81] text-white font-bold py-3 rounded-lg hover:bg-[#63a76f] transition-colors mt-2">
+                            שלח הודעה
+                        </button>
                     </form>
                 </div>
 
-                {/* מפה (דמו) */}
+                {/* מפה */}
                 <div className="bg-[#e5e7eb] rounded-2xl h-64 flex items-center justify-center border border-gray-100 shadow-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-12 h-12 text-gray-400">
-                        <path fillRule="evenodd" d="m11.54 22.351.07.04.028.016a.76.76 0 0 0 .723 0l.028-.015.071-.041a16.975 16.975 0 0 0 1.144-.742 19.58 19.58 0 0 0 2.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 0 0-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 0 0 2.682 2.282 16.975 16.975 0 0 0 1.145.742ZM12 13.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" clipRule="evenodd" />
-                    </svg>
+                    <MapContainer center={position} zoom={15} style={{ height: "256px", width: "100%" }} className="rounded-2xl">
+                        <TileLayer
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        />
+                        <Marker position={position}>
+                            <Popup>בית מתנאל - כאן אנחנו נמצאים!</Popup>
+                        </Marker>
+                    </MapContainer>
                 </div>
 
                 </div>
@@ -91,8 +190,8 @@ export default function Contact() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                     </svg>
                     <h3 className="font-bold text-gray-800 mb-1">כתובת</h3>
-                    <p className="text-gray-600 text-sm">רחוב האהבה 18</p>
-                    <p className="text-gray-600 text-sm">תל אביב-יפו, 6812345</p>
+                    <p className="text-gray-600 text-sm">שדרות רוטשילד 1</p>
+                    <p className="text-gray-600 text-sm">תל אביב-יפו, 6512101</p>
                     <p className="text-gray-400 text-xs mt-1">בתיאום מראש בלבד</p>
                 </div>
 

@@ -1,1 +1,7 @@
 @import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+/* הורדת שכבת ה-z בשביל תיקון המפה בגלילה */
+.leaflet-container {
+    z-index: 1;
+}

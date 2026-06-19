@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
@@ -22,6 +23,8 @@ export default function ReportForm() {
 
     const [fileName, setFileName] = useState(null);
 
+    const navigate = useNavigate();
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
@@ -34,13 +37,20 @@ export default function ReportForm() {
 
         // נשלח את הנתונים לפיירסטור
         try{
-
-            await addDoc(collection(db, "reports"), {
+            
+            const reportData = {
                 ...formData,
                 createdAt: serverTimestamp()
-            });
+            };
 
-            alert("הדיווח נשלח בהצלחה!");
+            await addDoc(collection(db, "reports"), reportData);
+
+            navigate('/ThankYou', { 
+                state: { 
+                    title: 'הדיווח התקבל!', 
+                    message: 'תודה שדיווחת לנו, הצוות שלנו יטפל בזה בהקדם.' 
+                } 
+            });
 
             // איפוס הטופס
             setFormData({ animalType: '', location: '', status: '', description: '', reporterName: '', reporterPhone: '', imageBase64: '' });
@@ -114,12 +124,12 @@ export default function ReportForm() {
                     {/* סוג חיה */}
                     <div className="flex flex-col gap-2">
                         <label className="text-sm font-bold text-gray-700">* סוג חיה</label>
-                        <select name="animalType" onChange={handleInputChange} value={formData.animalType} className="w-full p-3 bg-gray-50 border-none rounded-xl text-gray-500 outline-none focus:ring-2 focus:ring-green-400">
-                            <option>בחר/י סוג חיה</option>
-                            <option>ארנב</option>
-                            <option>כלב</option>
-                            <option>חתול</option>
-                            <option>אחר</option>
+                        <select name="animalType" required onChange={handleInputChange} value={formData.animalType} className="w-full p-3 bg-gray-50 border-none rounded-xl text-gray-500 outline-none focus:ring-2 focus:ring-green-400">
+                            <option value="">בחר/י סוג חיה</option>
+                            <option value="ארנב">ארנב</option>
+                            <option value="כלב">כלב</option>
+                            <option value="חתול">חתול</option>
+                            <option value="אחר">אחר</option>
                         </select>
                     </div>
 
@@ -129,6 +139,7 @@ export default function ReportForm() {
                         <input 
                             name="location"
                             onChange={handleInputChange}
+                            required
                             value={formData.location}
                             type="text" 
                             placeholder="כתובת מדויקת ככל האפשר" 
@@ -143,6 +154,7 @@ export default function ReportForm() {
                         <input 
                             name="status"
                             onChange={handleInputChange}
+                            required
                             value={formData.status}
                             type="text" 
                             placeholder="...פצוע / נטוש / כלוב מוזנח / אחר" 
@@ -156,6 +168,7 @@ export default function ReportForm() {
                         <textarea 
                             name="description"
                             onChange={handleInputChange}
+                            required
                             value={formData.description}
                             rows="4" 
                             placeholder="תארו בפירוט את המצב - כל פרט יכול לעזור" 
@@ -186,7 +199,7 @@ export default function ReportForm() {
                             <span className="text-gray-500 font-medium">לחץ להעלאת תמונה</span>
                             <span className="text-xs text-gray-400 mt-1">תמונה יכולה לעזור לנו להעריך את המצב ולהגיע מוכנים</span>
                         </div>
-                        
+
                         {/* הצגת קוביה של התמונה שהעלו */}
                         {fileName && (
                             <div className="mt-4 flex items-center justify-between p-3 bg-white border border-gray-200 rounded-xl shadow-sm">
@@ -232,6 +245,7 @@ export default function ReportForm() {
                             <input 
                             name="reporterName"
                             onChange={handleInputChange}
+                            required
                             value={formData.reporterName}
                             type="text" 
                             placeholder="השם שלך" 
@@ -243,9 +257,11 @@ export default function ReportForm() {
                             <input 
                             name="reporterPhone"
                             onChange={handleInputChange}
+                            required
                             value={formData.reporterPhone}
                             type="tel" 
                             placeholder="050-1234567" 
+                            pattern="[0-9]*"
                             className="w-full p-3 bg-gray-50 border-none rounded-xl outline-none focus:ring-2 focus:ring-green-400"
                             />
                         </div>
