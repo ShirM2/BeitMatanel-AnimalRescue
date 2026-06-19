@@ -23,10 +23,18 @@ const Footer = () => {
         <div className="flex flex-col gap-4">
           <h3 className="text-lg font-bold text-gray-700">קישורים מהירים</h3>
           <ul className="flex flex-col gap-2 text-gray-400 text-sm">
-            <li className="hover:text-gray-600 cursor-pointer transition-colors">חיות מחמד לאימוץ</li>
-            <li className="hover:text-gray-600 cursor-pointer transition-colors">דווח על חיה במצוקה</li>
-            <li className="hover:text-gray-600 cursor-pointer transition-colors">תרומות</li>
-            <li className="hover:text-gray-600 cursor-pointer transition-colors">צור קשר</li>
+            <li>
+              <Link to="/gallery" className="hover:text-gray-600 transition-colors">חיות מחמד לאימוץ</Link>
+            </li>
+            <li>
+              <Link to="/reportForm" className="hover:text-gray-600 transition-colors">דווח על חיה במצוקה</Link>
+            </li>
+            <li>
+              <Link to="/donations" className="hover:text-gray-600 transition-colors">תרומות</Link>
+            </li>
+            <li>
+              <Link to="/contact" className="hover:text-gray-600 transition-colors">צור קשר</Link>
+            </li>
           </ul>
         </div>
 

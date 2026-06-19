@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import AnimalCard from '../components/AnimalCard';
 import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link';
 
 import { collection, query, limit, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -11,52 +12,18 @@ const Home = () => {
   // משתנה סטייט לחיות
   const [previewAnimals, setPreviewAnimals] = useState([]);
 
-  // שמירת מיקום הגלילה בכל פעם שהמשתמש גולל
   useEffect(() => {
-
-    const handleScroll = () => {
-      // שומרים את המיקום שאנחנו נמצאים
-      sessionStorage.setItem('homeScroll', window.scrollY);
-    };
-    // מאזינים לאירוע של גלילה
-    window.addEventListener('scroll', handleScroll);
-
-    // מסירים את ההאזנה לאירוע כשהקומפוננטה מוסרת כדי למנוע זליגת זיכרון
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect( () => {
-    // פונקציה שמכניסה את שלושת החיות האחרונות מהמסד נתונים
     const fetchPreviewAnimals = async () => {
-
       try {
-        // הגדרת שאילתה ושליפת 3 חיות בלבד מהאוסף
         const q = query(collection(db, "animals"), limit(3));
-
-        // ביצוע הפנייה לשרת ושמירת התוצאות שחזרו
         const querySnapshot = await getDocs(q);
-
-        // המרת הנתונים מפייר בייס לאובייקטים
         const animalsData = querySnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data()
         }));
-
-        // עדכון הסטייס למערך החדש
         setPreviewAnimals(animalsData);
-
-        // שחזור מיקום הגלילה אחרי שהחיות נטענו
-        setTimeout(() => {
-          // מגדירים משתנה של המיקום האחרון שעצרנו בו
-          const savedPosition = sessionStorage.getItem('homeScroll');
-          // אם יש לנו את המיקום האחרון נגלול למיקום הזה בדף
-          if (savedPosition) {
-            window.scrollTo(0, parseInt(savedPosition));
-          }
-        }, 100);
-
+        // מחקנו מכאן את ה-setTimeout וה-sessionStorage!
       } catch (error) {
-
         console.error("Error fetching animals: ", error);
       }
     };
@@ -64,7 +31,7 @@ const Home = () => {
     fetchPreviewAnimals();
   }, []);
 
-    return(
+  return(
 
     <main className="min-h-screen bg-white">
       
@@ -161,16 +128,24 @@ const Home = () => {
 
           {/* כפתורי פעולה */}
           <div className="flex gap-4 mt-4">
-            <button className="flex items-center gap-2 bg-white text-[#6dbb7d] px-8 py-3 rounded-xl font-bold text-lg shadow-lg hover:bg-gray-100 transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+            <Link 
+              to="/donations" 
+              className="flex items-center justify-center gap-2 bg-white text-[#74bd81] px-8 py-3 rounded-xl font-bold text-lg shadow-lg hover:bg-green-50 transition-all transform hover:scale-105"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
               </svg>
               תרמו עכשיו
-            </button>
+            </Link>
             
-            <button className="bg-white/20 border-2 border-white text-white px-8 py-3 rounded-full font-bold text-lg hover:bg-white/30 transition-colors">
-              לפרטים נוספים
-            </button>
+            {/* #why-donate --> מפנה לחלק מסוים של הדף תרומות */}
+          <HashLink 
+            to="/donations#why-donate"
+            smooth
+            className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-xl font-bold text-lg hover:bg-white hover:text-[#74bd81] transition-all">
+            לפרטים נוספים
+          </HashLink>
+
           </div>
         </div>
       
