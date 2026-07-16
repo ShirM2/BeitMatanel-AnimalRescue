@@ -1,9 +1,18 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 export default function ThankYou() {
 
   const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+        // בודקים אם יש סטייט למשתמש, אם לא סימן שהמשתמש הגיע מהכתובת
+        if (!location.state) {
+            navigate('/'); // החזרה לעמוד הבית
+        }
+  }, [location, navigate]);
+
   // נעשה דיסטרקטינג לסטייט שקיבלנו מהניווט
   const { message, title } = location.state || { 
     title: 'תודה רבה!', 
