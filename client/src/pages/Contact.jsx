@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 // React-מול ה LeafLet תיקון לאייקון של הספרייה 
 const DefaultIcon = L.icon({
@@ -32,6 +33,34 @@ export default function Contact() {
         message: ''
     });
 
+    // סטייט לקישורים והטלפון מהפיירבייס
+    const [socials, setSocials] = useState({
+        facebook: '',
+        instagram: '',
+        whatsapp: '',
+        phoneSupport: '050-123-4567'
+    });
+
+    useEffect(() => {
+        // שליפת הגדרות פרטי יצירת הקשר
+        const fetchContactSettings = async () => {
+            try {
+                const docRef = doc(db, 'settings', 'social_links');
+                const docSnap = await getDoc(docRef);
+                if(docSnap.exists()) {
+                    setSocials(prev => ({
+                        ...prev,
+                        ...docSnap.data()
+                    }));
+                }
+            } catch (error) {
+                console.error("Error fetching social links for contact page:", error);
+            }
+        };
+
+        fetchContactSettings();
+    }, []);
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
@@ -55,7 +84,7 @@ export default function Contact() {
             setFormData({ name: '', email: '', phone: '', message: '' }); // איפוס
         } catch (error) {
             console.error("Error adding document: ", error);
-            alert('אירעה שגיאה בשליחה, נסה שוב מאוחר יותר.');
+            toast.error('אירעה שגיאה בשליחה, נסה שוב מאוחר יותר.');
         }
     };
 
@@ -169,7 +198,7 @@ export default function Contact() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.596-5.265-3.965-6.861-6.861l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
                     </svg>
                     <h3 className="font-bold text-gray-800 mb-1">טלפון</h3>
-                    <p className="text-gray-600 text-sm" dir="ltr">050-123-4567</p>
+                    <p className="text-gray-600 text-sm" dir="ltr">{socials.phoneSupport}</p>
                     <p className="text-gray-400 text-xs mt-1">זמינים 24/7 לחירום</p>
                 </div>
 
@@ -199,18 +228,32 @@ export default function Contact() {
                 <div className="border border-gray-100 rounded-2xl p-6 shadow-sm bg-white">
                     <h3 className="font-bold text-gray-800 mb-3">עקבו אחרינו</h3>
                     <div className="flex gap-3">
-                    <div className="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-[#74bd81] cursor-pointer hover:bg-green-100 transition-colors">
-                        {/* אייקון פייסבוק */}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
-                        </svg>
-                    </div>
-                    <div className="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-[#74bd81] cursor-pointer hover:bg-green-100 transition-colors">
-                        {/* אייקון אינסטגרם */}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                        </svg>
-                    </div>
+                    {socials.facebook && (
+                        <a 
+                            href={socials.facebook} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-[#74bd81] cursor-pointer hover:bg-green-100 transition-colors"
+                        >
+                            {/* אייקון פייסבוק */}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
+                            </svg>
+                        </a>
+                    )}
+                    {socials.instagram && (
+                        <a 
+                            href={socials.instagram} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-[#74bd81] cursor-pointer hover:bg-green-100 transition-colors"
+                        >
+                            {/* אייקון אינסטגרם */}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                        </a>
+                    )}
                     </div>
                 </div>
 

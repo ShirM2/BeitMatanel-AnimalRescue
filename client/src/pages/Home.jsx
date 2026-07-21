@@ -5,12 +5,15 @@ import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 
-import { collection, query, limit, getDocs } from 'firebase/firestore';
+import { collection, query, limit, getDocs, doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 
 const Home = () => {
   // משתנה סטייט לחיות
   const [previewAnimals, setPreviewAnimals] = useState([]);
+  
+  // משתנה סטייט להודעת מערכת
+  const [announcement, setAnnouncement] = useState({ text: '', isActive: false, bgColor: 'bg-amber-500' });
 
   useEffect(() => {
     const fetchPreviewAnimals = async () => {
@@ -22,13 +25,26 @@ const Home = () => {
           ...doc.data()
         }));
         setPreviewAnimals(animalsData);
-        // מחקנו מכאן את ה-setTimeout וה-sessionStorage!
       } catch (error) {
         console.error("Error fetching animals: ", error);
       }
     };
 
+    // פונקציה לשליפת הודעת המערכת
+    const fetchAnnouncement = async () => {
+      try {
+        const docRef = doc(db, 'settings', 'site_announcement');
+        const docSnap = await getDoc(docRef);
+        if(docSnap.exists()) {
+          setAnnouncement(docSnap.data());
+        }
+      } catch (error) {
+        console.error("Error fetching announcement:", error);
+      }
+    };
+
     fetchPreviewAnimals();
+    fetchAnnouncement();
   }, []);
 
   return(
@@ -36,6 +52,14 @@ const Home = () => {
     <main className="min-h-screen bg-white">
       
       <Navbar />
+
+      {/* באנר הודעת מערכת (יופיע רק אם המנהל הפעיל אותו בהגדרות) */}
+      {announcement.isActive && announcement.text && (
+        <div className={`${announcement.bgColor || 'bg-amber-500'} text-white text-center py-3 px-4 font-medium shadow-inner flex items-center justify-center gap-2 transition-colors duration-300`}>
+          <span>📢</span>
+          <span>{announcement.text}</span>
+        </div>
+      )}
       
       <header className="relative text-center">
       
@@ -67,6 +91,7 @@ const Home = () => {
              אנחנו מחלצים חיות מחמד במצוקה. מספקים להן טיפול וטרינרי מלא,
              מעניקים להן מקום בטוח להתאושש,ועובדים למצוא להן משפחות אוהבות ואחראיות לכל החיים.
           </span>
+
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl mx-auto mt-12">
@@ -157,6 +182,3 @@ const Home = () => {
 };
 
 export default Home;
-    
-
-
