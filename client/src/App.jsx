@@ -1,4 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import Home from './pages/Home';
 import Gallery from './pages/Gallery';
 import ReportForm from './pages/ReportForm';
@@ -65,6 +68,8 @@ function App() {
         </Route>
 
       </Routes>
+
+      <ToastContainer position="bottom-right" />
     </Router>
   );
 }
