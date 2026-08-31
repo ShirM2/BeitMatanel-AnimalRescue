@@ -1,16 +1,72 @@
-# React + Vite
+# 🐾 בית מתנאל (Beit Matanel) - Animal Rescue Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+פרויקט גמר פול-סטאק שפותח במסגרת לימודי הנדסאי תוכנה (מה"ט) באוניברסיטת אריאל. 
+המערכת מספקת פתרון טכנולוגי מקיף לעמותת חילוץ והצלת בעלי חיים, וכוללת ממשק משתמש (לתורמים ומאמצים) וממשק ניהול (Dashboard) מלא לצוות העמותה.
 
-Currently, two official plugins are available:
+## 🌟 פיצ'רים מרכזיים
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+* **ניהול תרומות והוצאות (דאשבורד מנהלים):** 
+  * מעקב אחר תרומות בזמן אמת, סיכום חודשי וחישוב תזרים נטו.
+  * פילוח הוצאות העמותה והצגת נתונים סטטיסטיים.
+* **הפקת קבלות אוטומטית:** יצירה והורדה של קבלות PDF מעוצבות לתורמים עם סיום התרומה.
+* **מערכת ניהול בעלי חיים:** הוספה, עריכה ומעקב אחר סטטוס האימוץ של בעלי החיים בעמותה.
+* **אבטחה והרשאות:** אזור ניהול מאובטח הדורש הזדהות (Authentication) מבוססת Firebase.
 
-## React Compiler
+## 💻 טכנולוגיות
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* **Frontend:** React.js, Tailwind CSS
+* **Backend & Database:** Firebase (Firestore Database, Authentication)
+* **ספריות בולטות:** 
+  * `react-router-dom` (לניהול ניווט)
+  * `jspdf` & `html2canvas` (להפקת קבצי PDF)
+  * `react-hot-toast` (להתראות משתמש)
 
-## Expanding the ESLint configuration
+## 🚀 התקנה והרצה מקומית
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. שכפלו את המאגר:
+   ```bash
+   git clone https://github.com/ShirM2/BeitMatanel-AnimalRescue.git
+   ```
+2. היכנסו לתיקיית הפרויקט:
+   ```bash
+   cd beit-matanel
+   ```
+3. התקינו את התלויות הדרושות:
+   ```bash
+   npm install
+   ```
+4. הפעילו את שרת הפיתוח:
+   ```bash
+   npm run dev
+   ```
+
+## 🔐 גישה למערכת הניהול (עבור הבוחנים)
+
+כדי להיכנס לדאשבורד המנהלים ולצפות בניהול התרומות ובעלי החיים, יש להשתמש בפרטים הבאים בעמוד ההתחברות לצוות:
+
+* **אימייל:** `tester@beitmatanel.com`
+* **סיסמה:** `admin123`
+
+<div dir="rtl">
+
+## 📁 מבנה הפרויקט
+
+המערכת מחולקת לתיקיית `client` ולתיקיית `server`. להלן המבנה המרכזי של צד הלקוח (`client/src`):
+
+* **תיקיית `assets`**: אייקונים וקובצי מדיה.
+* **תיקיית `components`**: רכיבי המערכת:
+  * `admin`: רכיבי צד ניהול, כולל תת-תיקיית `setting` להגדרות פרופיל ואתר.
+  * `donations`: רכיבי תהליך התרומה והפקת קבלות.
+  * רכיבים כלליים: `AnimalCard.jsx`, `Navbar.jsx`, `Footer.jsx` ועוד.
+* **תיקיית `pages`**: עמודי המערכת:
+  * `admin`: עמודי דאשבורד מנהלים וקובצי עזר לניהול נתונים.
+  * עמודי צד לקוח: `Home.jsx`, `About.jsx`, `AdoptionForm.jsx`, `Login.jsx` ועוד.
+* **תיקיית `photos`**: תמונות סטטיות של המערכת (לוגו, תמונות צוות).
+* **קובץ `firebase.js`**: תצורת החיבור לשירותי Firebase.
+
+---
+
+**פותח על ידי:** שיר מלכה
+
+</div>
+

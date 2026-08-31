@@ -192,19 +192,31 @@ export default function Donations() {
         <ul className="space-y-4">
           <li className="flex items-start gap-2 text-gray-600">
             <span className="text-green-500 shrink-0 select-none">•</span>
-            <p><span className="font-bold text-gray-800">טיפול וטרינרי:</span> חיות מחמד שמחולצות זקוקות לטיפול רפואי מיידי - בדיקות, חיסונים, עיקורים וטיפולים נוספים.</p>
+            <p>
+            <span className="font-bold text-gray-800">טיפול וטרינרי:</span>
+             חיות מחמד שמחולצות זקוקות לטיפול רפואי מיידי - בדיקות, חיסונים, עיקורים וטיפולים נוספים.
+             </p>
           </li>
           <li className="flex items-start gap-2 text-gray-600">
             <span className="text-green-500 shrink-0 select-none">•</span>
-            <p><span className="font-bold text-gray-800">מזון איכותי:</span> תזונה נכונה היא קריטית לבריאות החיה - ירקות טריים, מזון איכותי ותוספי מזון מתאימים.</p>
+            <p>
+            <span className="font-bold text-gray-800">מזון איכותי:</span>
+             תזונה נכונה היא קריטית לבריאות החיה - ירקות טריים, מזון איכותי ותוספי מזון מתאימים.
+             </p>
           </li>
           <li className="flex items-start gap-2 text-gray-600">
             <span className="text-green-500 shrink-0 select-none">•</span>
-            <p><span className="font-bold text-gray-800">מקלט ושיקום:</span> כל חיית מחמד זקוקה למקום בטוח להשתקם בו עד שהיא מוכנה לאימוץ.</p>
+            <p>
+            <span className="font-bold text-gray-800">מקלט ושיקום:</span>
+             כל חיית מחמד זקוקה למקום בטוח להשתקם בו עד שהיא מוכנה לאימוץ.
+             </p>
           </li>
           <li className="flex items-start gap-2 text-gray-600">
             <span className="text-green-500 shrink-0 select-none">•</span>
-            <p><span className="font-bold text-gray-800">חינוך והדרכה:</span> אנחנו מלמדים מאמצים כיצד לטפל בחיות מחמד בצורה נכונה ואחראית.</p>
+            <p>
+            <span className="font-bold text-gray-800">חינוך והדרכה:</span>
+             אנחנו מלמדים מאמצים כיצד לטפל בחיות מחמד בצורה נכונה ואחראית.
+             </p>
           </li>
         </ul>
       </div>
