@@ -86,7 +86,7 @@ export default function AnimalDetails() {
                     <div className="flex items-center justify-center gap-3 text-sm font-medium text-gray-600 bg-gray-50 px-5 py-2 rounded-full mt-3 border border-gray-100 shadow-sm">
                         <span>{animal.type}</span>
                         <span className="text-gray-300">•</span>
-                        <span>{animal.age}</span>
+                        <span>{animal.age == 0 ? 'פחות משנה' : `${animal.age} שנים`}</span>
                         <span className="text-gray-300">•</span>
                         <span>{animal.gender}</span>
                     </div>

@@ -15,7 +15,7 @@
 ## 💻 טכנולוגיות
 
 * **Frontend:** React.js, Tailwind CSS
-* **Backend & Database:** Firebase (Firestore Database, Authentication)
+* **Backend & Database:** Firebase (Firestore Database, Authentication) - Serverless Architecture
 * **ספריות בולטות:** 
   * `react-router-dom` (לניהול ניווט)
   * `jspdf` & `html2canvas` (להפקת קבצי PDF)
@@ -51,7 +51,7 @@
 
 ## 📁 מבנה הפרויקט
 
-המערכת מחולקת לתיקיית `client` ולתיקיית `server`. להלן המבנה המרכזי של צד הלקוח (`client/src`):
+המערכת בנויה בארכיטקטורת Serverless. להלן המבנה המרכזי של צד הלקוח (client/src):
 
 * **תיקיית `assets`**: אייקונים וקובצי מדיה.
 * **תיקיית `components`**: רכיבי המערכת:

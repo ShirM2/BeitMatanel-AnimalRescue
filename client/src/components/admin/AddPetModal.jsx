@@ -37,6 +37,7 @@ const AddPetModal = ({ onClose, onAdded }) => {
                         <SelectField label="מין" value={formData.gender} onChange={(val) => setFormData({...formData, gender: val})} options={['זכר', 'נקבה']} />
                         <SelectField label="סוג" value={formData.type} onChange={(val) => setFormData({...formData, type: val})} options={['כלב', 'חתול', 'ארנב']} />
                         <SelectField label="סטטוס" value={formData.status} onChange={(val) => setFormData({...formData, status: val})} options={['זמין לאימוץ', 'בתהליך אימוץ']} />
+                        <TextareaField label="תיאור" value={formData.description} onChange={(val) => setFormData({...formData, description: val})} />
                         <div className="md:col-span-2">
                         <InputField label="קישור לתמונה" value={formData.imageUrl} onChange={(val) => setFormData({...formData, imageUrl: val})} />
                         </div>
@@ -66,6 +67,14 @@ const SelectField = ({ label, value, onChange, options }) => (
     <select className="w-full p-3 border rounded-xl bg-white" value={value} onChange={(e) => onChange(e.target.value)}>
       {options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
     </select>
+  </div>
+);
+
+// רכיב עזר לתיאור ארוך
+const TextareaField = ({ label, value, onChange }) => (
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+    <textarea className="w-full p-3 border rounded-xl" rows="4" value={value || ''} onChange={(e) => onChange(e.target.value)} />
   </div>
 );
 

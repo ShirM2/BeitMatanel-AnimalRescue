@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import AnimalCard from '../components/AnimalCard';
 import Footer from '../components/Footer';
@@ -9,15 +9,17 @@ import { collection, query, limit, getDocs, doc, getDoc } from 'firebase/firesto
 import { db } from '../firebase';
 
 const Home = () => {
-  // משתנה סטייט לחיות
+  //  משתנה סטייט לחיות לתצוגה המקדימה
   const [previewAnimals, setPreviewAnimals] = useState([]);
   
   // משתנה סטייט להודעת מערכת
   const [announcement, setAnnouncement] = useState({ text: '', isActive: false, bgColor: 'bg-amber-500' });
 
   useEffect(() => {
+
     const fetchPreviewAnimals = async () => {
-      try {
+      try { 
+        // fetching the last 3 animals from the animal db
         const q = query(collection(db, "animals"), limit(3));
         const querySnapshot = await getDocs(q);
         const animalsData = querySnapshot.docs.map(doc => ({
@@ -49,7 +51,7 @@ const Home = () => {
 
   return(
 
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-white overflow-x-hidden">
       
       <Navbar />
 
@@ -61,13 +63,13 @@ const Home = () => {
         </div>
       )}
       
-      <header className="relative text-center">
+      <header className="relative text-center w-full h-[400px] md:h-auto overflow-hidden">
       
-        <img src='src/photos/header.png' className="w-full h-auto"></img>
+        <img src='src/photos/header.png' className="w-full h-full object-cover"></img>
 
-        <div className="absolute inset-0 flex flex-col justify-center items-center pb-43">
-          <h1 className="text-6xl text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">מצילים,מטפלים ומאמצים חיות מחמד בישראל</h1>
-          <p className="mt-3 text-2xl text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">עמותת בית מתנאל מחלצת ומשקמת חיות מחמד במצוקה ומוצאת להם בתים אוהבים</p>
+        <div className="absolute inset-0 flex flex-col justify-center items-center p-6">
+          <h1 className="text-3xl md:text-5xl lg:text-6xl text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">מצילים,מטפלים ומאמצים חיות מחמד בישראל</h1>
+          <p className="mt-3 text-lg md:text-2xl text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">עמותת בית מתנאל מחלצת ומשקמת חיות מחמד במצוקה ומוצאת להם בתים אוהבים</p>
           <Link to="/AdoptionInfo"
               className="mt-3 bg-white text-yellow-500 px-3 py-1.5 md:px-6 md:py-2 rounded-full font-bold shadow-md hover:bg-yellow-100 transition-all duration-300 whitespace-nowrap text-xs md:text-base">אני רוצה לאמץ</Link>
 
@@ -113,12 +115,12 @@ const Home = () => {
       </div>
 
       {/* מיני גלריה */}
-      <div className="flex flex-col items-center w-full h-auto text-center p-20">
+      <div className="flex flex-col items-center w-full h-auto text-center px-4 py-10 md:p-20">
         <h1 className="text-3xl">חיות מחמד מחכות לאימוץ</h1>
         <h2>הכירו את חלק מחיות המחמד המקסימות שמחכות למשפחה חדשה</h2>
 
         {/* Grids-הגלרייה עצמה תהיה מחולקת ל */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8 w-full px-2">
           {/* מעבר על המערך חיות ויצירת קומפוננטות מהמערך*/}
             {previewAnimals.map((animal) => (
               <AnimalCard key={animal.id} animal={animal} />
@@ -142,7 +144,7 @@ const Home = () => {
       </div>
 
         {/* תרומות */}
-        <div className="w-screen relative bg-[#6dbb7d] py-20 px-4 mt-6 text-white text-center flex flex-col items-center gap-6">
+        <div className="w-full relative bg-[#6dbb7d] py-20 px-4 mt-6 text-white text-center flex flex-col items-center gap-6">
           {/* כותרת גדולה */}
           <h2 className="text-4xl font-bold">עזרו לנו להציל עוד חיות מחמד</h2>
           

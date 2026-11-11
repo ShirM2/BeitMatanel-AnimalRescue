@@ -88,28 +88,42 @@ export default function Donations() {
         <div className="bg-white p-6 rounded-2xl shadow-sm border">
           <h2 className="font-bold mb-4">תרומות אחרונות</h2>
           <div className="space-y-4">
-            {donations.map((donation) => {
-              // המרת התאריך לתצוגה נכונה
-              const displayDate = donation.date
-                ? (typeof donation.date.toDate === 'function' ? donation.date.toDate() : new Date(donation.date)).toLocaleDateString('he-IL')
-                : 'תאריך חסר';
+            {/* יצירת מערך עזר למיון התרומות לפי תאריך */}
+            {[...donations]
+              .sort((a, b) => {   // שימוש בפונקציה שממיינת בין התאריכים
+                // פונקציית עזר לחילוץ התאריך
+                const convertDateToNumber = (date) => {
+                  if (!date) return 0; // אם חסר תאריך תרומה, נחזיר 0
+                  // typeof date.toDate === 'function' -> בודקים איזה סוג תאריך התקבל
+                  // getTime() -> המרה מתאריך למספר
+                  return typeof date.toDate === 'function' ? date.toDate().getTime() : new Date(date).getTime();
+                };
+                // מיון מהתאריך החדש לישן
+                // נחסר בין שני התאריכים שהמרנו למספרים והתוצאה שהפונקציה סורט תקבל תקבע את סדר המיון
+                return convertDateToNumber(b.date) - convertDateToNumber(a.date);
+              })
+              .map((donation) => {
+                // המרת התאריך לתצוגה נכונה
+                const displayDate = donation.date
+                  ? (typeof donation.date.toDate === 'function' ? donation.date.toDate() : new Date(donation.date)).toLocaleDateString('he-IL')
+                  : 'תאריך חסר';
 
-              // טיפול בשם חסר או חלקי
-              const fullName = `${donation.firstName || ''} ${donation.lastName || ''}`.trim();
-              const displayName = fullName ? fullName : 'תורם אנונימי';
+                // טיפול בשם חסר או חלקי
+                const fullName = `${donation.firstName || ''} ${donation.lastName || ''}`.trim();
+                const displayName = fullName ? fullName : 'תורם אנונימי';
 
-              return (
-                <div key={donation.id} className="grid grid-cols-3 border-b pb-2 items-center">
-                  <span className="text-gray-600 text-right">{displayDate}</span>
-                  <span className="text-center font-medium truncate px-2" dir="auto">
-                    {displayName}
-                  </span>
-                  <span className="text-green-600 font-medium text-left">
-                    ₪{Number(donation.amount).toLocaleString()}
-                  </span>
-                </div>
-              );
-            })}
+                return (
+                  <div key={donation.id} className="grid grid-cols-3 border-b pb-2 items-center">
+                    <span className="text-gray-600 text-right">{displayDate}</span>
+                    <span className="text-center font-medium truncate px-2" dir="auto">
+                      {displayName}
+                    </span>
+                    <span className="text-green-600 font-medium text-left">
+                      ₪{Number(donation.amount).toLocaleString()}
+                    </span>
+                  </div>
+                );
+              })}
           </div>
         </div>
 
@@ -121,7 +135,17 @@ export default function Donations() {
           </div>
 
           <div className="space-y-4">
-            {expenses.map((expense) => {
+            {[...expenses]
+            .sort((a,b) => {
+              // פונקציה להמרת תאריך למספר
+              const convertDateToNumber = (date) =>{
+                if(!date) return 0; // אם אין תאריך נחזיר 0
+                return typeof date.toDate === 'function' ? date.toDate().getTime() : new Date(date).getTime();
+              }
+              // נחסיר את מספרי התאריכים והתוצאה תתקבל לסורט שתמיין
+              return convertDateToNumber(b.date) - convertDateToNumber(a.date);
+            }) 
+            .map((expense) => {
               // המרת תאריך ההוצאה
               const displayDate = expense.date
                 ? (typeof expense.date.toDate === 'function' ? expense.date.toDate() : new Date(expense.date)).toLocaleDateString('he-IL')

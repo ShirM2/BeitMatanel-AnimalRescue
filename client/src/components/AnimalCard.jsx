@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 export default function AnimalCard({animal}) {
     
   return (
-    <div className="w-[350px] bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden text-right flex flex-col" dir="rtl">
+    <div className="w-full max-w-[350px] mx-auto bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden text-right flex flex-col" dir="rtl">
       
       {/* אזור התמונה והתגיות שמעליה */}
       <div className="relative">
@@ -33,7 +33,7 @@ export default function AnimalCard({animal}) {
         
         {/* גיל ומין */}
         <p className="p-4 text-sm text-gray-500 mt-1">
-          {animal.age} • {animal.gender}
+          {animal.age == 0 ? 'פחות משנה' : `${animal.age} שנים`} • {animal.gender}
         </p>
         
         {/* כפתור */}

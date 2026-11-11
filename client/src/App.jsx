@@ -23,7 +23,7 @@ import PetsManagement from './pages/admin/PetsManagement';
 import Adoptions from './pages/admin/Adoptions';
 import AdminDonations from './pages/admin/Donations';
 import Settings from './pages/admin/Settings';
-
+import ContactForms from './pages/admin/ContactForms';
 
 import ProtectedRoute from './components/admin/ProtectedRoute';
 import AdminLayout from './components/admin/AdminLayout';
@@ -66,7 +66,8 @@ function App() {
           <Route path="Adoptions" element={<Adoptions />} />
           <Route path="Donations" element={<AdminDonations />} />
           <Route path="Settings" element={<Settings />} />
-          
+          <Route path="ContactForms" element={<ContactForms />} />
+
         </Route>
 
       </Routes>
